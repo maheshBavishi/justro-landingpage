@@ -1,0 +1,659 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+
+.needsToWin {
+    position: relative;
+    padding: 110px 0 120px 0;
+    // Distinct theme-matching background: subtle warm ivory & clean slate
+    background: linear-gradient(180deg, #f8fafc 0%, #fefcf7 40%, #f9fbfd 100%);
+    overflow: hidden;
+
+    // Top & Bottom Boundary Lines
+    .topDividerLine {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(226, 232, 240, 0.8) 15%,
+                rgba(245, 158, 11, 0.55) 50%,
+                rgba(226, 232, 240, 0.8) 85%,
+                transparent 100%);
+        z-index: 4;
+    }
+
+    .bottomDividerLine {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(226, 232, 240, 0.8) 15%,
+                rgba(245, 158, 11, 0.45) 50%,
+                rgba(226, 232, 240, 0.8) 85%,
+                transparent 100%);
+        z-index: 4;
+    }
+
+    // 3D Infinite Background Canvas - Crisp, Vibrant, 100% Visible
+    .canvas3D {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        opacity: 0.95;
+    }
+
+    // Ambient Lighting & Subtle Grid
+    .sectionGlow {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 900px;
+        height: 480px;
+        background: radial-gradient(ellipse at 50% 10%, rgba(251, 191, 36, 0.16) 0%, rgba(245, 158, 11, 0.05) 45%, transparent 70%);
+        filter: blur(60px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    :global(.container) {
+        position: relative;
+        z-index: 5;
+    }
+
+    // Section Header
+    .sectionHeader {
+        max-width: 760px;
+        margin: 0 auto 55px auto;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .topBadge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 999px;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
+            margin-bottom: 18px;
+            backdrop-filter: blur(8px);
+
+            .badgePulse {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: #f59e0b;
+                box-shadow: 0 0 8px #f59e0b;
+                animation: badgeBeacon 2s ease-in-out infinite;
+            }
+
+            span {
+                font-size: 11.5px;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                color: #92400e;
+                text-transform: uppercase;
+            }
+        }
+
+        h2 {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #090d16;
+            margin-bottom: 16px;
+
+            @include heading-font;
+
+            .goldText {
+                background: linear-gradient(135deg, #b45309 0%, #d97706 40%, #f59e0b 80%, #fbbf24 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                display: inline-block;
+            }
+        }
+
+        p {
+            font-size: clamp(15px, 1.1vw, 17px);
+            line-height: 1.6;
+            color: #475569;
+            margin: 0;
+            max-width: 640px;
+        }
+    }
+
+    // Modern Visual Cards Grid
+    .featuresGrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+
+        @include breakpoint("md") {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @include breakpoint("sm") {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    // Modern Feature Card
+    .featureCard {
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 0.92);
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 4px 22px -2px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+
+        &:hover {
+            border-color: rgba(245, 158, 11, 0.45);
+            box-shadow: 0 22px 48px -12px rgba(245, 158, 11, 0.16), 0 1px 3px rgba(0, 0, 0, 0.03);
+
+            .cardContent .cardAction {
+                color: #d97706;
+
+                svg {
+                    transform: translateX(4px);
+                    color: #d97706;
+                }
+            }
+        }
+
+        // Top Visual Illustration Header
+        .cardImageWrapper {
+            height: 185px;
+            width: 100%;
+            background: linear-gradient(180deg, #fdfbf7 0%, #f8fafc 100%);
+            border-bottom: 1px solid rgba(241, 245, 249, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+
+            .cardSvg {
+                width: 100%;
+                height: 100%;
+                display: block;
+            }
+        }
+
+        // Card Content Area
+        .cardContent {
+            padding: 24px 26px 26px 26px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            .cardStatBadge {
+                margin-bottom: 12px;
+
+                span {
+                    display: inline-block;
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    color: #b45309;
+                    background: rgba(254, 243, 199, 0.65);
+                    border: 1px solid rgba(245, 158, 11, 0.25);
+                    border-radius: 999px;
+                    padding: 3px 12px;
+                    letter-spacing: 0.02em;
+                }
+            }
+
+            h3 {
+                font-size: 18.5px;
+                font-weight: 800;
+                color: #090d16;
+                line-height: 1.35;
+                letter-spacing: -0.015em;
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-size: 14.5px;
+                line-height: 1.6;
+                color: #64748b;
+                margin: 0 0 20px 0;
+                flex: 1;
+            }
+
+            .cardAction {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13.5px;
+                font-weight: 700;
+                color: #0f172a;
+                transition: color 0.2s ease;
+                cursor: pointer;
+
+                svg {
+                    transition: transform 0.25s ease, color 0.2s ease;
+                    color: #f59e0b;
+                }
+            }
+        }
+    }
+
+    // Bottom Conversion Banner
+    .bottomCtaBanner {
+        background: linear-gradient(135deg, #ffffff 0%, #fffdfa 50%, #fefcf6 100%);
+        border: 1px solid rgba(245, 158, 11, 0.35);
+        box-shadow: 0 20px 50px -10px rgba(245, 158, 11, 0.12), 0 1px 3px rgba(0, 0, 0, 0.03);
+        border-radius: 24px;
+        padding: 44px 50px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+
+        @include breakpoint("md") {
+            flex-direction: column;
+            text-align: center;
+            padding: 34px 24px;
+        }
+
+        .ctaContent {
+            max-width: 580px;
+
+            .ctaBadge {
+                display: inline-block;
+                font-size: 11.5px;
+                font-weight: 700;
+                letter-spacing: 0.14em;
+                color: #d97706;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+            }
+
+            h3 {
+                font-size: clamp(22px, 2.4vw, 30px);
+                font-weight: 800;
+                color: #090d16;
+                line-height: 1.25;
+                margin-bottom: 8px;
+
+                @include heading-font;
+            }
+
+            p {
+                font-size: 15px;
+                color: #475569;
+                line-height: 1.5;
+                margin: 0;
+            }
+        }
+
+        .ctaButtons {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+
+            @include breakpoint("sm") {
+                flex-direction: column;
+                width: 100%;
+
+                div {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+// ==========================================
+// INFINITE ANIMATIONS FOR CARD ILLUSTRATIONS
+// ==========================================
+
+// 1. Ambient Glow Pulsing
+@keyframes glowPulse {
+
+    0%,
+    100% {
+        transform: scale(0.92);
+        opacity: 0.55;
+    }
+
+    50% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+}
+
+.animGlowPulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: glowPulse 3.8s ease-in-out infinite;
+}
+
+// 2. Continuous Rotating Dashed Orbital Ring
+@keyframes dashSpin {
+    to {
+        stroke-dashoffset: -40;
+    }
+}
+
+.animDashOrbit {
+    animation: dashSpin 6s linear infinite;
+}
+
+// 3. Tilting Balance Scales (Rotates around center beam pivot)
+@keyframes tiltBeam {
+
+    0%,
+    100% {
+        transform: rotate(-3.5deg);
+    }
+
+    50% {
+        transform: rotate(3.5deg);
+    }
+}
+
+.animBalanceBeam {
+    transform-origin: 0px -16px;
+    animation: tiltBeam 3.6s ease-in-out infinite;
+}
+
+// 4. Equalizer Live Waveform Soundbars
+@keyframes waveOscillate {
+
+    0%,
+    100% {
+        transform: scaleY(0.4);
+        opacity: 0.65;
+    }
+
+    50% {
+        transform: scaleY(1.35);
+        opacity: 1;
+    }
+}
+
+.waveBar {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: waveOscillate 1.3s ease-in-out infinite;
+
+    &.waveBar1 {
+        animation-delay: 0.05s;
+    }
+
+    &.waveBar2 {
+        animation-delay: 0.3s;
+    }
+
+    &.waveBar3 {
+        animation-delay: 0.55s;
+    }
+
+    &.waveBar4 {
+        animation-delay: 0.2s;
+    }
+
+    &.waveBar5 {
+        animation-delay: 0.7s;
+    }
+
+    &.waveBar6 {
+        animation-delay: 0.4s;
+    }
+
+    &.waveBar7 {
+        animation-delay: 0.85s;
+    }
+
+    &.waveBar8 {
+        animation-delay: 0.25s;
+    }
+
+    &.waveBar9 {
+        animation-delay: 0.5s;
+    }
+
+    &.waveBar10 {
+        animation-delay: 0.15s;
+    }
+
+    &.waveBar11 {
+        animation-delay: 0.65s;
+    }
+}
+
+// 5. Floating Levitations (Subtle Y-translation relative to isolated group)
+@keyframes floatYFast {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes floatYSlow {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes floatYDown {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(4px);
+    }
+}
+
+.animFloatFast {
+    animation: floatYFast 2.4s ease-in-out infinite;
+}
+
+.animFloatSlow {
+    animation: floatYSlow 3.6s ease-in-out infinite;
+}
+
+.animFloatShield {
+    animation: floatYSlow 3.2s ease-in-out infinite;
+}
+
+.animVaultShield {
+    animation: floatYSlow 3.4s ease-in-out infinite;
+}
+
+.animFloatLeft {
+    animation: floatYFast 3s ease-in-out infinite;
+}
+
+.animFloatRight {
+    animation: floatYDown 3s ease-in-out infinite;
+}
+
+// 6. Contract Scanning Laser Beam
+@keyframes laserSweep {
+    0% {
+        transform: translateY(0px);
+        opacity: 0.25;
+    }
+
+    20% {
+        opacity: 0.95;
+    }
+
+    80% {
+        opacity: 0.95;
+    }
+
+    100% {
+        transform: translateY(68px);
+        opacity: 0.25;
+    }
+}
+
+.animLaserScan {
+    animation: laserSweep 2.8s ease-in-out infinite alternate;
+}
+
+// Clause Breathing Glow
+@keyframes pulseClauseAnim {
+
+    0%,
+    100% {
+        opacity: 0.65;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.animPulseClause {
+    animation: pulseClauseAnim 2.2s ease-in-out infinite;
+}
+
+// 7. Radar Sweeping Scanner (Rotates around 0, 0 of centered group)
+@keyframes radarSweepContinuous {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animRadarSweep {
+    transform-origin: 0px 0px;
+    animation: radarSweepContinuous 3.8s linear infinite;
+}
+
+// Radar Ping Ripple
+@keyframes radarPingRipple {
+    0% {
+        transform: scale(0.65);
+        opacity: 0.85;
+    }
+
+    100% {
+        transform: scale(1.45);
+        opacity: 0;
+    }
+}
+
+.animRadarPing {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: radarPingRipple 2.2s ease-out infinite;
+}
+
+// Target Spark Glow
+@keyframes sparkBlink {
+
+    0%,
+    100% {
+        opacity: 0.6;
+        transform: scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+.animSpark {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sparkBlink 1.4s ease-in-out infinite;
+}
+
+// 8. Laser Quill Pen Writing Motion & Seal Pulse
+@keyframes quillWritingMotion {
+
+    0%,
+    100% {
+        transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(-3px, 2px) rotate(-3.5deg);
+    }
+
+    50% {
+        transform: translate(-5px, 1px) rotate(-1deg);
+    }
+
+    75% {
+        transform: translate(-2px, -2px) rotate(2.5deg);
+    }
+}
+
+.animQuill {
+    transform-origin: 0px 42px;
+    animation: quillWritingMotion 2.4s ease-in-out infinite;
+}
+
+@keyframes sealPulseAnim {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+.animSealPulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: sealPulseAnim 2.8s ease-in-out infinite;
+}
+
+// Top Beacon Pulse
+@keyframes badgeBeacon {
+
+    0%,
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 6px #f59e0b;
+    }
+
+    50% {
+        transform: scale(1.3);
+        box-shadow: 0 0 14px #f59e0b;
+    }
+}

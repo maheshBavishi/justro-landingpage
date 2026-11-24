@@ -1,0 +1,476 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+
+.stickyScrollSection {
+    position: relative;
+    height: 280vh; // Generous scroll space to step smoothly from Step 1 -> Step 2 -> Step 3
+    background: linear-gradient(180deg, #f9fbfd 0%, #fefcf7 50%, #f8fafc 100%);
+
+    @include breakpoint("md") {
+        height: auto;
+    }
+
+    // Sticky Stage: Pinned in viewport while user scrolls
+    .stickyViewport {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+
+        @include breakpoint("md") {
+            position: relative;
+            height: auto;
+            padding: 80px 0 90px 0;
+            overflow: visible;
+        }
+
+        // Ambient Warm Gold Glow Dome
+        .ambientGlow {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 850px;
+            height: 500px;
+            background: radial-gradient(ellipse at 50% 30%, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.04) 55%, transparent 75%);
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        :global(.container) {
+            position: relative;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        // Header Section
+        .sectionHeader {
+            max-width: 760px;
+            margin: 0 auto 30px auto;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            @include breakpoint("md") {
+                margin-bottom: 35px;
+            }
+
+            .topBadge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 16px;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(245, 158, 11, 0.35);
+                border-radius: 999px;
+                box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);
+                margin-bottom: 12px;
+                backdrop-filter: blur(8px);
+
+                .badgeStar {
+                    color: #d97706;
+                    font-size: 11px;
+                }
+
+                span {
+                    font-size: 11.5px;
+                    font-weight: 700;
+                    letter-spacing: 0.12em;
+                    color: #92400e;
+                    text-transform: uppercase;
+                }
+            }
+
+            h2 {
+                font-size: 52px;
+                font-weight: 900;
+                line-height: 1.15;
+                letter-spacing: -0.03em;
+                color: #090d16;
+                margin-bottom: 10px;
+
+                @include heading-font;
+
+                .goldText {
+                    background: linear-gradient(135deg, #b45309 0%, #d97706 40%, #f59e0b 80%, #fbbf24 100%);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    display: inline-block;
+                }
+            }
+
+            p {
+                font-size: clamp(14.5px, 1.05vw, 16.5px);
+                line-height: 1.55;
+                color: #475569;
+                margin: 0 0 16px 0;
+                max-width: 600px;
+            }
+
+            // Interactive Step Pills Row
+            .stepPillsRow {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .stepPill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 7px;
+                    padding: 5px 14px;
+                    border: 1px solid rgba(226, 232, 240, 0.9);
+                    border-radius: 999px;
+                    background: rgba(255, 255, 255, 0.85);
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: #64748b;
+                    backdrop-filter: blur(8px);
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    outline: none;
+
+                    &:hover {
+                        border-color: rgba(245, 158, 11, 0.45);
+                        color: #0f172a;
+                    }
+
+                    &.activePill {
+                        border-color: rgba(245, 158, 11, 0.55);
+                        background: rgba(254, 243, 199, 0.5);
+                        color: #92400e;
+                    }
+
+                    &.currentPill {
+                        border-color: #f59e0b;
+                        background: #fffdfa;
+                        box-shadow: 0 4px 14px rgba(245, 158, 11, 0.2);
+                        transform: scale(1.05);
+
+                        .pillNumber {
+                            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                            color: #ffffff;
+                            box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+                        }
+                    }
+
+                    .pillNumber {
+                        width: 18px;
+                        height: 18px;
+                        border-radius: 50%;
+                        background: #cbd5e1;
+                        color: #ffffff;
+                        font-size: 10.5px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: all 0.3s ease;
+                    }
+                }
+
+                .pillConnector {
+                    width: 22px;
+                    height: 2px;
+                    background: rgba(226, 232, 240, 0.9);
+                    border-radius: 999px;
+                    transition: background 0.3s ease;
+
+                    &.activeConnector {
+                        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+                        box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+                    }
+                }
+            }
+        }
+
+        // Cards Row Wrapper: Flex Container that smoothly centers & expands cards
+        .cardsRowWrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            .cardsRow {
+                display: flex;
+                justify-content: center;
+                align-items: stretch;
+                gap: 20px;
+                width: 100%;
+                max-width: 1260px;
+
+                @include breakpoint("md") {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                // Connecting Arrow Bridge between Cards
+                .cardConnectionBridge {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    width: 28px;
+                    flex-shrink: 0;
+
+                    @include breakpoint("md") {
+                        display: none;
+                    }
+
+                    .bridgeTrack {
+                        position: absolute;
+                        width: 100%;
+                        height: 2px;
+                        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+                        box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+                        border-radius: 999px;
+                    }
+
+                    .bridgeArrow {
+                        position: relative;
+                        z-index: 2;
+                        font-size: 14px;
+                        font-weight: 800;
+                        color: #d97706;
+                        background: #ffffff;
+                        border: 1px solid rgba(245, 158, 11, 0.4);
+                        width: 22px;
+                        height: 22px;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 2px 6px rgba(245, 158, 11, 0.2);
+                    }
+                }
+
+                // Modern Step Card
+                .stepCard {
+                    flex: 1 1 0;
+                    max-width: 390px;
+                    min-width: 290px;
+                    background: #ffffff;
+                    border: 1px solid rgba(226, 232, 240, 0.95);
+                    border-radius: 24px;
+                    padding: 26px 24px 24px 24px;
+                    box-shadow: 0 12px 35px -6px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(0, 0, 0, 0.02);
+                    position: relative;
+                    overflow: hidden;
+                    display: flex;
+                    flex-direction: column;
+                    transition: border-color 0.35s ease, box-shadow 0.35s ease;
+
+                    @include breakpoint("md") {
+                        max-width: 100%;
+                        width: 100%;
+                    }
+
+                    // Active Highlight State
+                    &.highlightedCard {
+                        border-color: rgba(245, 158, 11, 0.6);
+                        box-shadow: 0 22px 50px -10px rgba(245, 158, 11, 0.2), 0 0 24px rgba(251, 191, 36, 0.12);
+
+                        .cardTopRow .iconBox {
+                            border-color: rgba(245, 158, 11, 0.5);
+                            background: rgba(254, 243, 199, 0.4);
+
+                            .iconElement {
+                                color: #d97706;
+                                transform: scale(1.08);
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        border-color: rgba(245, 158, 11, 0.5);
+                        box-shadow: 0 20px 45px -8px rgba(245, 158, 11, 0.18);
+                    }
+
+                    // Watermark 01, 02, 03 in background
+                    .watermarkNumber {
+                        position: absolute;
+                        top: 4px;
+                        right: 16px;
+                        font-size: 72px;
+                        font-weight: 900;
+                        line-height: 1;
+                        color: rgba(241, 245, 249, 0.85);
+                        letter-spacing: -0.04em;
+                        pointer-events: none;
+                        user-select: none;
+                        z-index: 1;
+                    }
+
+                    // Top Row: Icon with Step Number badge + Tag Pill
+                    .cardTopRow {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        margin-bottom: 16px;
+                        position: relative;
+                        z-index: 2;
+
+                        .iconBox {
+                            position: relative;
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 13px;
+                            background: #f8fafc;
+                            border: 1px solid rgba(226, 232, 240, 0.95);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.3s ease;
+
+                            .stepBadge {
+                                position: absolute;
+                                top: -5px;
+                                right: -5px;
+                                width: 19px;
+                                height: 19px;
+                                border-radius: 50%;
+                                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                                color: #ffffff;
+                                font-size: 11px;
+                                font-weight: 800;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                box-shadow: 0 2px 6px rgba(245, 158, 11, 0.4);
+                            }
+
+                            .iconElement {
+                                color: #0f172a;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                transition: all 0.3s ease;
+                            }
+                        }
+
+                        .tagPill {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 5px;
+                            padding: 4px 12px;
+                            background: rgba(254, 243, 199, 0.6);
+                            border: 1px solid rgba(245, 158, 11, 0.25);
+                            border-radius: 999px;
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #b45309;
+                            letter-spacing: 0.02em;
+
+                            .tagStar {
+                                font-size: 10px;
+                                color: #d97706;
+                            }
+                        }
+                    }
+
+                    // Card Heading
+                    h3 {
+                        font-size: 19px;
+                        font-weight: 800;
+                        color: #090d16;
+                        margin: 0 0 10px 0;
+                        letter-spacing: -0.015em;
+                        line-height: 1.35;
+                        position: relative;
+                        z-index: 2;
+                    }
+
+                    // Card Description
+                    p {
+                        font-size: 13.8px;
+                        line-height: 1.6;
+                        color: #64748b;
+                        margin: 0 0 20px 0;
+                        min-height: 66px;
+                        position: relative;
+                        z-index: 2;
+
+                        @include breakpoint("md") {
+                            min-height: auto;
+                        }
+                    }
+
+                    // Feature Checklist Items (3 Pills)
+                    .featureItemsList {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 8px;
+                        margin-top: auto;
+                        position: relative;
+                        z-index: 2;
+
+                        .featureItem {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            padding: 8px 14px;
+                            background: #f8fafc;
+                            border: 1px solid rgba(241, 245, 249, 0.95);
+                            border-radius: 10px;
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #334155;
+                            transition: background 0.2s ease, border-color 0.2s ease;
+
+                            &:hover {
+                                background: #ffffff;
+                                border-color: rgba(245, 158, 11, 0.35);
+                            }
+
+                            .checkCircle {
+                                width: 17px;
+                                height: 17px;
+                                border-radius: 50%;
+                                border: 1.5px solid #d97706;
+                                color: #d97706;
+                                font-size: 10px;
+                                font-weight: 800;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                flex-shrink: 0;
+                            }
+
+                            span {
+                                letter-spacing: 0.01em;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Scroll Hint at the bottom of the sticky stage
+        .scrollHint {
+            margin-top: 26px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.02em;
+
+            @include breakpoint("md") {
+                display: none;
+            }
+
+            .scrollHintArrow {
+                font-size: 13px;
+                color: #f59e0b;
+                display: inline-block;
+            }
+        }
+    }
+}

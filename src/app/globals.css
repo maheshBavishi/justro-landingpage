@@ -1,0 +1,47 @@
+body,
+input,
+button,
+a,
+::placeholder,
+textarea {
+  font-family: var(--font-inter);
+}
+
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+p:last-child {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: calc(1280px + 40px);
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.ass {
+  font-family: var(--font-stardos-sans);
+}

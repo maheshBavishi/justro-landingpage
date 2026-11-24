@@ -1,0 +1,28 @@
+@forward 'breakpoints/breakpoints.scss';
+@use 'breakpoints/breakpoints.scss' as *;
+
+@mixin bg {
+
+    background: linear-gradient(90deg,
+            #fcd76b 0%,
+            #fbbf24 50%,
+            #f59e0b 100%);
+}
+
+@mixin text {
+    background: linear-gradient(90deg, #fcd76b 0%, #fbbf24 50%, #f59e0b 100%) text;
+    -webkit-text-fill-color: rgba(0, 0, 0, 0);
+    display: inline-block;
+    position: relative;
+}
+
+@mixin text-gold {
+    background: linear-gradient(135deg, #9a6e09 0%, #edc845 45%, #c9a227 70%, #edc845 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@mixin heading-font {
+    font-family: var(--font-stardos-sans);
+}

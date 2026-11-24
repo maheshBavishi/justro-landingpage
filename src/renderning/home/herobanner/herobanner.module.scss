@@ -1,0 +1,671 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+
+.herobanner {
+    position: relative;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #fbfcfe;
+    padding-top: 76px;
+    box-sizing: border-box;
+
+    @include breakpoint("md") {
+        height: auto;
+        min-height: 100dvh;
+        max-height: none;
+        padding-top: 100px;
+        padding-bottom: 60px;
+    }
+
+    // Dedicated Strictly Isolated 3D Canvas Background Layer
+    .canvasBackground {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+
+        canvas {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+        }
+    }
+
+    // Ambient Lighting & Floating Gradient Orbs
+    .ambientBackground {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+
+        // Ambient Warm Gold Glow Dome
+        .sectionGlow {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 950px;
+            height: 500px;
+            background: radial-gradient(ellipse at 50% 25%, rgba(251, 191, 36, 0.18) 0%, rgba(245, 158, 11, 0.05) 50%, transparent 75%);
+            filter: blur(70px);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        // 3D Holographic Gyroscope Rings with Orbiting Satellites
+        .gyroContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 880px;
+            height: 880px;
+            transform: translate(-50%, -46%) perspective(1100px) rotateX(68deg) rotateY(-8deg);
+            transform-style: preserve-3d;
+            pointer-events: none;
+            z-index: 2;
+
+            @include breakpoint("md") {
+                display: none;
+            }
+
+            .gyroRing {
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                border-radius: 50%;
+                box-sizing: border-box;
+
+                &.ring1 {
+                    width: 840px;
+                    height: 840px;
+                    border: 1.5px dashed rgba(245, 158, 11, 0.35);
+                    animation: rotateGyro 44s linear infinite;
+                    box-shadow: 0 0 25px rgba(245, 158, 11, 0.08);
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: -4px;
+                        left: 50%;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #f59e0b;
+                        box-shadow: 0 0 12px #f59e0b, 0 0 20px #fbbf24;
+                    }
+                }
+
+                &.ring2 {
+                    width: 620px;
+                    height: 620px;
+                    border: 1.5px dotted rgba(217, 119, 6, 0.3);
+                    animation: rotateGyro 32s linear infinite reverse;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -4px;
+                        right: 30%;
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                        background: #fbbf24;
+                        box-shadow: 0 0 10px #fbbf24;
+                    }
+                }
+
+                &.ring3 {
+                    width: 420px;
+                    height: 420px;
+                    border: 1px solid rgba(251, 191, 36, 0.25);
+                    box-shadow: inset 0 0 35px rgba(245, 158, 11, 0.08);
+                    animation: rotateGyro 22s linear infinite;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        top: 25%;
+                        left: -3px;
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 50%;
+                        background: #d97706;
+                        box-shadow: 0 0 8px #d97706;
+                    }
+                }
+            }
+        }
+
+        .orbGold {
+            position: absolute;
+            top: -10%;
+            left: 12%;
+            width: 540px;
+            height: 540px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.22) 0%, rgba(245, 158, 11, 0.08) 55%, transparent 75%);
+            filter: blur(80px);
+        }
+
+        .orbAmber {
+            position: absolute;
+            top: 25%;
+            right: 8%;
+            width: 480px;
+            height: 480px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(252, 215, 107, 0.08) 55%, transparent 75%);
+            filter: blur(75px);
+        }
+
+        .orbSlate {
+            position: absolute;
+            bottom: -5%;
+            left: 35%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(224, 231, 255, 0.45) 0%, rgba(241, 245, 249, 0.15) 60%, transparent 80%);
+            filter: blur(70px);
+        }
+
+        .gridOverlay {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.035) 1px, transparent 1px);
+            background-size: 52px 52px;
+            mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 35%, transparent 95%);
+            -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 35%, transparent 95%);
+        }
+    }
+
+    // Floating Technology Badges (Visible on larger screens)
+    .floatingCard {
+        position: absolute;
+        z-index: 5;
+        perspective: 1000px;
+        transform-style: preserve-3d;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(226, 232, 240, 0.88);
+        border-radius: 16px;
+        padding: 12px 18px;
+        box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.07), 0 1px 3px rgba(0, 0, 0, 0.04);
+        pointer-events: auto;
+        overflow: hidden;
+        transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+
+        @include breakpoint("md") {
+            display: none;
+        }
+
+        &.cardLeft {
+            top: 28%;
+            left: max(20px, calc((100vw - 1280px) / 2 - 20px));
+
+            @media (max-width: 1360px) {
+                left: 16px;
+            }
+        }
+
+        &.cardRight {
+            top: 40%;
+            right: max(20px, calc((100vw - 1280px) / 2 - 20px));
+
+            @media (max-width: 1360px) {
+                right: 16px;
+            }
+        }
+
+        // Auto-Highlight State
+        &.activeCardHighlight {
+            border-color: rgba(245, 158, 11, 0.65);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 22px 50px -10px rgba(245, 158, 11, 0.28), 0 0 26px rgba(251, 191, 36, 0.25), 0 1px 3px rgba(0, 0, 0, 0.04);
+
+            .cardShimmerOverlay {
+                opacity: 1;
+                animation: shimmerSweep 3.2s ease-in-out infinite;
+            }
+
+            .cardContent .cardIconWrapper {
+                transform: scale(1.08);
+                border-color: rgba(245, 158, 11, 0.5);
+                box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+            }
+
+            .cardContent .cardTitle {
+                color: #090d16;
+            }
+        }
+
+        .cardShimmerOverlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(105deg, transparent 20%, rgba(254, 243, 199, 0.55) 50%, rgba(251, 191, 36, 0.25) 60%, transparent 80%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .cardContent {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+
+            .cardIconWrapper {
+                width: 38px;
+                height: 38px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, rgba(254, 243, 199, 0.9) 0%, rgba(253, 230, 138, 0.5) 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid rgba(245, 158, 11, 0.2);
+                transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+                .cardEmoji {
+                    font-size: 18px;
+                }
+            }
+
+            .cardTitleRow {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                .liveIndicator {
+                    position: relative;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 7px;
+                    height: 7px;
+
+                    .livePing {
+                        position: absolute;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                        background: #10b981;
+                        animation: pingDot 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+                    }
+
+                    .liveDot {
+                        position: relative;
+                        width: 7px;
+                        height: 7px;
+                        border-radius: 50%;
+                        background: #10b981;
+                    }
+                }
+            }
+
+            .cardTitle {
+                font-size: 14px;
+                font-weight: 700;
+                color: #0f172a;
+                line-height: 18px;
+                transition: color 0.3s ease;
+            }
+
+            .cardSubtitle {
+                font-size: 12px;
+                color: #64748b;
+                line-height: 16px;
+            }
+        }
+    }
+
+    // Main Content
+    :global(.container) {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+    }
+
+    .heroContent {
+        max-width: 860px;
+        margin: 0 auto;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        // Top Pill Badge
+        .pillBadge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 18px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            border-radius: 999px;
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08), 0 1px 2px rgba(0, 0, 0, 0.03);
+            margin-bottom: 22px;
+            backdrop-filter: blur(12px);
+
+            .pulseDotWrapper {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 10px;
+                height: 10px;
+
+                .pulsePing {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    background: #f59e0b;
+                }
+
+                .pulseDot {
+                    position: relative;
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: #d97706;
+                }
+            }
+
+            .pillText {
+                font-size: 13.5px;
+                font-weight: 600;
+                color: #451a03;
+                letter-spacing: 0.01em;
+            }
+
+            .sparkle {
+                color: #f59e0b;
+                font-size: 13px;
+                line-height: 1;
+            }
+        }
+
+        // Main Title (H1)
+        h1 {
+            font-size: 80px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.035em;
+            color: #090d16;
+            margin-bottom: 14px;
+            font-family: var(--font-stardos-sans);
+
+            .gradientText {
+                color: #f59e0b;
+
+            }
+
+            @include breakpoint("sm") {
+                font-size: 34px;
+            }
+        }
+
+        // Animated Rotating Subheading
+        .dynamicSubhead {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: clamp(22px, 2.6vw, 36px);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            color: #1e293b;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+
+            .staticWord {
+                color: #334155;
+            }
+
+            .rotatingWrapper {
+                display: inline-flex;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+                padding: 4px 6px;
+                height: 1.35em;
+                vertical-align: middle;
+                perspective: 600px;
+                transform-style: preserve-3d;
+
+                .activeWord {
+                    display: inline-block;
+                    position: relative;
+                    color: #f59e0b;
+                    font-weight: 800;
+
+                    white-space: nowrap;
+                    padding-right: 4px;
+                }
+            }
+
+            .blinkingCursor {
+                font-size: clamp(24px, 2.8vw, 38px);
+                font-weight: 300;
+                color: #f59e0b;
+                margin-left: 2px;
+                line-height: 1;
+                display: inline-block;
+                animation: blinkCursor 0.9s infinite;
+            }
+        }
+
+        // Paragraph
+        p {
+            font-size: clamp(15px, 1.15vw, 17.5px);
+            line-height: 1.6;
+            color: #475569;
+            max-width: 650px;
+            margin: 0 auto 26px auto;
+            font-weight: 400;
+
+            @include breakpoint("sm") {
+                font-size: 15px;
+                margin-bottom: 22px;
+            }
+        }
+
+        // CTAs Buttons Row
+        .actionButtons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+
+            @include breakpoint("sm") {
+                flex-direction: column;
+                width: 100%;
+                gap: 12px;
+
+                div {
+                    width: 100%;
+                }
+            }
+        }
+
+        // Mobile & Tablet Floating Cards Row
+        .mobileCardsRow {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 0 0 24px 0;
+            width: 100%;
+
+            @include breakpoint("md") {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .mobileCardItem {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 9px 16px;
+                background: rgba(255, 255, 255, 0.88);
+                border: 1px solid rgba(226, 232, 240, 0.9);
+                border-radius: 14px;
+                backdrop-filter: blur(12px);
+                transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                cursor: pointer;
+
+                &.activeMobileCard {
+                    border-color: rgba(245, 158, 11, 0.65);
+                    background: #ffffff;
+                    box-shadow: 0 10px 24px -4px rgba(245, 158, 11, 0.28), 0 0 14px rgba(251, 191, 36, 0.2);
+                    transform: translateY(-2px);
+                }
+
+                .mobileCardEmoji {
+                    font-size: 17px;
+                }
+
+                .mobileCardTitle {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #0f172a;
+                    line-height: 1.2;
+                }
+
+                .mobileCardSub {
+                    font-size: 11px;
+                    color: #64748b;
+                }
+            }
+        }
+
+        // Security / Trust Badges
+        .trustBadgesRow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px 18px;
+            flex-wrap: wrap;
+
+            .badgeItem {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                background: rgba(255, 255, 255, 0.75);
+                border: 1px solid rgba(226, 232, 240, 0.85);
+                padding: 7px 15px;
+                border-radius: 999px;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                cursor: default;
+                transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+
+                &.activeBadgeHighlight {
+                    border-color: rgba(245, 158, 11, 0.55);
+                    background: rgba(254, 243, 199, 0.55);
+                    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.16);
+                    transform: translateY(-2px);
+
+                    .checkWrapper {
+                        transform: scale(1.15);
+                        filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.7));
+                    }
+
+                    span {
+                        color: #92400e;
+                        font-weight: 600;
+                    }
+                }
+
+                .checkWrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: #d97706;
+                    line-height: 0;
+                    transition: transform 0.25s ease, filter 0.25s ease;
+
+                    svg {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+
+                span {
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #334155;
+                    letter-spacing: 0.01em;
+                    transition: color 0.25s ease;
+                }
+            }
+        }
+    }
+}
+
+@keyframes blinkCursor {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes rotateGyro {
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes shimmerSweep {
+    0% {
+        transform: translateX(-120%);
+    }
+
+    50%,
+    100% {
+        transform: translateX(220%);
+    }
+}
+
+@keyframes pingDot {
+    0% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+
+    75%,
+    100% {
+        transform: scale(2.4);
+        opacity: 0;
+    }
+}

@@ -1,0 +1,425 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+
+.lawyersAcross {
+    position: relative;
+    padding: 100px 0 110px 0;
+    background: linear-gradient(180deg, #f8fafc 0%, #fefcf7 50%, #f9fbfd 100%);
+    overflow: hidden;
+
+    @include breakpoint("md") {
+        padding: 70px 0 80px 0;
+    }
+
+    // Top Divider Line matching NeedsToWin
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(226, 232, 240, 0.8) 15%,
+            rgba(245, 158, 11, 0.45) 50%,
+            rgba(226, 232, 240, 0.8) 85%,
+            transparent 100%);
+        z-index: 4;
+    }
+
+    // Dedicated Strictly Isolated 3D Canvas Background Layer
+    .canvasBackground {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+        overflow: hidden;
+
+        canvas {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+        }
+    }
+
+    // Ambient Warm Gold Glow Dome
+    .sectionGlow {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 900px;
+        height: 480px;
+        background: radial-gradient(ellipse at 50% 10%, rgba(251, 191, 36, 0.16) 0%, rgba(245, 158, 11, 0.05) 45%, transparent 70%);
+        filter: blur(65px);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    :global(.container) {
+        position: relative;
+        z-index: 5;
+    }
+
+    // Section Header (Centered)
+    .sectionHeader {
+        max-width: 760px;
+        margin: 0 auto 50px auto;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @include breakpoint("md") {
+            margin-bottom: 35px;
+        }
+
+        .topBadge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 999px;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.08);
+            margin-bottom: 14px;
+            backdrop-filter: blur(8px);
+
+            .badgePulse {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: #f59e0b;
+                box-shadow: 0 0 8px #f59e0b;
+                animation: badgePulse 2s ease-in-out infinite;
+            }
+
+            span {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.12em;
+                color: #92400e;
+                text-transform: uppercase;
+            }
+        }
+
+        h2 {
+            font-size: clamp(30px, 3.4vw, 48px);
+            font-weight: 900;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            color: #090d16;
+            margin-bottom: 12px;
+
+            @include heading-font;
+
+            .goldText {
+                background: linear-gradient(135deg, #b45309 0%, #d97706 40%, #f59e0b 80%, #fbbf24 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                display: inline-block;
+            }
+        }
+
+        p {
+            font-size: clamp(15px, 1.05vw, 17px);
+            line-height: 1.55;
+            color: #475569;
+            margin: 0;
+            max-width: 640px;
+        }
+    }
+
+    // INFINITE MARQUEE OUTER WRAPPER WITH EDGE FADE MASKS
+    .marqueeOuter {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        padding: 14px 0 24px 0;
+
+        .marqueeFadeLeft {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 180px;
+            height: 100%;
+            background: linear-gradient(90deg, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
+            z-index: 5;
+            pointer-events: none;
+
+            @include breakpoint("sm") {
+                width: 50px;
+            }
+        }
+
+        .marqueeFadeRight {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 180px;
+            height: 100%;
+            background: linear-gradient(270deg, #f8fafc 0%, rgba(248, 250, 252, 0) 100%);
+            z-index: 5;
+            pointer-events: none;
+
+            @include breakpoint("sm") {
+                width: 50px;
+            }
+        }
+
+        // Marquee Track with Pure Hardware-Accelerated 60fps CSS Loop
+        .marqueeTrack {
+            display: flex;
+            align-items: stretch;
+            gap: 28px;
+            width: max-content;
+            will-change: transform;
+            animation: infiniteMarquee 48s linear infinite;
+
+            &:hover {
+                animation-play-state: paused;
+            }
+        }
+    }
+
+    // Testimonial Card
+    .testimonialCard {
+        flex: 0 0 440px;
+        width: 440px;
+        background: linear-gradient(145deg, #ffffff 0%, #fffdfa 55%, #fefcf6 100%);
+        border: 1.5px solid rgba(245, 158, 11, 0.28);
+        border-radius: 22px;
+        padding: 26px 26px 22px 26px;
+        box-shadow: 0 10px 32px -4px rgba(245, 158, 11, 0.08), 0 4px 16px rgba(15, 23, 42, 0.03);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 330px;
+        user-select: none;
+        transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+
+        @include breakpoint("sm") {
+            flex: 0 0 320px;
+            width: 320px;
+            padding: 22px 20px 18px 20px;
+            min-height: auto;
+        }
+
+        // Top Light Sheen
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 45%;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
+            pointer-events: none;
+            border-radius: 22px 22px 0 0;
+        }
+
+        // Subtle Radial Amber Glow in top-right corner
+        &::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.16) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        &:hover {
+            transform: translateY(-5px);
+            border-color: rgba(245, 158, 11, 0.6);
+            box-shadow: 0 20px 48px -8px rgba(245, 158, 11, 0.22), 0 6px 20px rgba(15, 23, 42, 0.05);
+        }
+
+        // Card Top Row
+        .cardTopRow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 2;
+
+            .starRow {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+
+                .starIcon {
+                    color: #f59e0b;
+                    font-size: 16px;
+                    line-height: 1;
+                    filter: drop-shadow(0 1px 2px rgba(245, 158, 11, 0.35));
+                }
+            }
+
+            .practiceAreaBadge {
+                font-size: 11px;
+                font-weight: 700;
+                color: #92400e;
+                background: rgba(254, 243, 199, 0.65);
+                border: 1px solid rgba(245, 158, 11, 0.3);
+                padding: 4px 11px;
+                border-radius: 999px;
+                white-space: nowrap;
+            }
+        }
+
+        // Impact / Metric ROI Pill
+        .metricPill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            align-self: flex-start;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.7) 0%, rgba(253, 230, 138, 0.4) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 8px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #92400e;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+
+            .metricSparkle {
+                color: #d97706;
+                font-size: 12px;
+            }
+        }
+
+        // Quote Text
+        .quoteText {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #334155;
+            margin: 0 0 18px 0;
+            position: relative;
+            z-index: 2;
+            font-style: normal;
+        }
+
+        // Divider
+        .cardDivider {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.3) 0%, rgba(226, 232, 240, 0.85) 100%);
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        // Author Row
+        .authorRow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+
+            .avatarCircle {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #b45309 0%, #d97706 50%, #f59e0b 100%);
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 14px;
+                font-weight: 800;
+                letter-spacing: 0.04em;
+                box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+                border: 2px solid #ffffff;
+                flex-shrink: 0;
+            }
+
+            .authorInfo {
+                display: flex;
+                flex-direction: column;
+                min-width: 0;
+
+                .authorNameRow {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+
+                    h4 {
+                        font-size: 15px;
+                        font-weight: 800;
+                        color: #090d16;
+                        margin: 0;
+                        line-height: 1.25;
+                    }
+
+                    .verifiedCheck {
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 50%;
+                        background: #f59e0b;
+                        color: #ffffff;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 9px;
+                        font-weight: 900;
+                        flex-shrink: 0;
+                    }
+                }
+
+                .authorRole {
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: #d97706;
+                    line-height: 1.3;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .authorFirm {
+                    font-size: 11.5px;
+                    color: #64748b;
+                    line-height: 1.3;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+        }
+    }
+}
+
+// Seamless Marquee Keyframes Loop
+@keyframes infiniteMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes badgePulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.9;
+    }
+    50% {
+        transform: scale(1.3);
+        opacity: 0.5;
+    }
+}
