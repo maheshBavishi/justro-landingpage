@@ -77,7 +77,7 @@ export default function Footer() {
                     {/* Logo */}
                     <div className={styles.logo}>
                         <h2>
-                            Legal <span>AI</span>
+                            Justro
                         </h2>
                     </div>
 
