@@ -6,7 +6,7 @@ import styles from './footer.module.scss';
 
 export default function Footer() {
     return (
-        <footer className={styles.footer}>
+        <footer className={styles.footer} id="contact">
             {/* Ambient Lighting Domes */}
             <div className={styles.topGlow} />
 
@@ -83,13 +83,12 @@ export default function Footer() {
 
                     {/* Header Menu Links */}
                     <nav className={styles.footerMenu}>
-                        <a href="#features">Features</a>
-                        <a href="#how-it-works">How It Works</a>
-                        <a href="#practice-areas">Practice Areas</a>
-                        <a href="#testimonials">Testimonials</a>
-                        <a href="#security">Security</a>
-                        <a href="#faq">FAQ</a>
-                        <a href="#contact">Contact</a>
+                        <a href="#features" data-text="Features"><span>Features</span></a>
+                        <a href="#how-it-works" data-text="How It Works"><span>How It Works</span></a>
+                        <a href="#practice-areas" data-text="Practice Areas"><span>Practice Areas</span></a>
+                        <a href="#testimonials" data-text="Testimonials"><span>Testimonials</span></a>
+                        <a href="#faq" data-text="FAQ"><span>FAQ</span></a>
+                        <a href="#contact" data-text="Contact"><span>Contact</span></a>
                     </nav>
 
                     {/* Social Icons */}

@@ -86,7 +86,7 @@ export default function LawyersAcross() {
     const marqueeList = [...testimonials, ...testimonials];
 
     return (
-        <section className={styles.lawyersAcross}>
+        <section className={styles.lawyersAcross} id="testimonials">
             {/* 3D Canvas Background strictly isolated */}
             <div className={styles.canvasBackground}>
                 <NeedsToWin3D />

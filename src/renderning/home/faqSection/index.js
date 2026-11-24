@@ -63,6 +63,7 @@ export default function FaqSection() {
 
         return (
             <motion.div
+                id="faq"
                 key={faq.id}
                 className={`${styles.faqCard} ${isOpen ? styles.openCard : ''}`}
                 initial={{ opacity: 0, y: 20 }}

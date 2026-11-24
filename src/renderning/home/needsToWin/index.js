@@ -348,7 +348,7 @@ const features = [
 
 export default function NeedsToWin() {
     return (
-        <section className={styles.needsToWin}>
+        <section className={styles.needsToWin} id="features">
             {/* Top & Bottom Golden Horizon Divider Lines */}
             <div className={styles.topDividerLine} />
             <div className={styles.bottomDividerLine} />

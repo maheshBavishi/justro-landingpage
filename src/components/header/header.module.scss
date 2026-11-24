@@ -2,18 +2,40 @@
 @use "../../../scss/breakpoints/breakpoints.scss" as *;
 
 .header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 99;
+    z-index: 1000;
     padding: 16px 0;
     background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(226, 232, 240, 0.7);
-    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.04);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+    transform: translateY(0);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.3s ease,
+                backdrop-filter 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease,
+                padding 0.3s ease;
+    will-change: transform;
+
+    &.sticky {
+        transform: translateY(0);
+        background-color: rgba(255, 255, 255, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+        box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+        padding: 14px 0;
+    }
+
+    &.hidden {
+        transform: translateY(-100%);
+        box-shadow: none;
+    }
 
     .headerAlignment {
         display: flex;

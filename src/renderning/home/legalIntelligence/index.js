@@ -74,16 +74,30 @@ const stepsData = [
 
 export default function LegalIntelligence() {
     const sectionRef = useRef(null);
+    const cardRefs = useRef([]);
     const [currentStep, setCurrentStep] = useState(1);
+    const [isMobile, setIsMobile] = useState(false);
 
-    // Track scroll position inside the sticky container
+    // Track responsive viewport (< 1024px is mobile/tablet)
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 1024);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
+    // Track scroll position inside the sticky container on desktop
     const { scrollYProgress } = useScroll({
         target: sectionRef,
         offset: ['start start', 'end end']
     });
 
-    // Detect active step dynamically on scroll
+    // Detect active step dynamically on desktop scroll
     useEffect(() => {
+        if (isMobile) return;
+
         const unsubscribe = scrollYProgress.on('change', (progress) => {
             if (progress < 0.28) {
                 setCurrentStep(1);
@@ -94,16 +108,48 @@ export default function LegalIntelligence() {
             }
         });
         return () => unsubscribe();
-    }, [scrollYProgress]);
+    }, [scrollYProgress, isMobile]);
 
-    // Cards visible based on current step
-    // Step 1 -> Shows Card 1 (centered)
-    // Step 2 -> Card 1 glides left, Card 2 enters from bottom beside it
-    // Step 3 -> Cards glide, Card 3 enters from bottom beside Card 2 (3 side-by-side)
-    const visibleCards = stepsData.slice(0, currentStep);
+    // On mobile: Observe each card to highlight the active step pill on natural scroll
+    useEffect(() => {
+        if (!isMobile) return;
+
+        const observers = [];
+        cardRefs.current.forEach((el, index) => {
+            if (!el) return;
+            const observer = new IntersectionObserver(
+                ([entry]) => {
+                    if (entry.isIntersecting) {
+                        setCurrentStep(index + 1);
+                    }
+                },
+                { threshold: 0.45 }
+            );
+            observer.observe(el);
+            observers.push(observer);
+        });
+
+        return () => {
+            observers.forEach((obs) => obs.disconnect());
+        };
+    }, [isMobile]);
+
+    // Handle clicking a step pill
+    const handleStepClick = (stepNum) => {
+        setCurrentStep(stepNum);
+        if (isMobile && cardRefs.current[stepNum - 1]) {
+            cardRefs.current[stepNum - 1].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+        }
+    };
+
+    // On mobile show all 3 steps in natural vertical sequence; On desktop glide in 1-by-1
+    const visibleCards = isMobile ? stepsData : stepsData.slice(0, currentStep);
 
     return (
-        <section ref={sectionRef} className={styles.stickyScrollSection}>
+        <section ref={sectionRef} className={styles.stickyScrollSection} id="how-it-works">
             {/* Pinned Viewport Stage */}
             <div className={styles.stickyViewport}>
                 {/* Background Ambient Glow */}
@@ -135,7 +181,7 @@ export default function LegalIntelligence() {
                                         <button
                                             type="button"
                                             className={`${styles.stepPill} ${isActive ? styles.activePill : ''} ${isCurrent ? styles.currentPill : ''}`}
-                                            onClick={() => setCurrentStep(s.step)}
+                                            onClick={() => handleStepClick(s.step)}
                                         >
                                             <span className={styles.pillNumber}>{s.step}</span>
                                             <span>{s.step === 1 ? 'Intake' : s.step === 2 ? 'Analysis' : 'Insights'}</span>
@@ -147,40 +193,28 @@ export default function LegalIntelligence() {
                         </div>
                     </div>
 
-                    {/* Cards Stage: Cards dynamically Show & Move Side-by-Side */}
+                    {/* Cards Stage: Cards dynamically Show & Move Side-by-Side (Desktop) or Vertical Flow (Mobile) */}
                     <div className={styles.cardsRowWrapper}>
-                        <motion.div layout className={styles.cardsRow}>
-                            <AnimatePresence mode="popLayout">
-                                {visibleCards.map((card, index) => (
+                        {isMobile ? (
+                            // Mobile View: Natural full-height cards stacked vertically with connecting downward arrow bridges
+                            <div className={styles.cardsRow}>
+                                {stepsData.map((card, index) => (
                                     <React.Fragment key={card.step}>
-                                        {/* Connecting Line between cards */}
+                                        {/* Downward connecting bridge between stacked mobile cards */}
                                         {index > 0 && (
-                                            <motion.div
-                                                className={styles.cardConnectionBridge}
-                                                initial={{ scaleX: 0, opacity: 0 }}
-                                                animate={{ scaleX: 1, opacity: 1 }}
-                                                exit={{ scaleX: 0, opacity: 0 }}
-                                                transition={{ duration: 0.45, ease: 'easeOut' }}
-                                            >
+                                            <div className={styles.cardConnectionBridge}>
                                                 <div className={styles.bridgeTrack} />
                                                 <div className={styles.bridgeGlow} />
-                                                <span className={styles.bridgeArrow}>→</span>
-                                            </motion.div>
+                                                <span className={styles.bridgeArrow}>
+                                                    <span className={styles.arrowMobile}>↓</span>
+                                                </span>
+                                            </div>
                                         )}
 
-                                        {/* Step Card with Bottom-to-Top entrance and Layout Move */}
-                                        <motion.div
-                                            layout
+                                        {/* Mobile Step Card: Natural full content height */}
+                                        <div
+                                            ref={(el) => (cardRefs.current[index] = el)}
                                             className={`${styles.stepCard} ${currentStep === card.step ? styles.highlightedCard : ''}`}
-                                            initial={{ opacity: 0, y: 90, scale: 0.92 }}
-                                            animate={{ opacity: 1, y: 0, scale: 1 }}
-                                            exit={{ opacity: 0, y: 70, scale: 0.92 }}
-                                            transition={{
-                                                layout: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-                                                opacity: { duration: 0.45 },
-                                                y: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-                                                scale: { duration: 0.45 }
-                                            }}
                                         >
                                             {/* Background Watermark 01, 02, 03 */}
                                             <div className={styles.watermarkNumber}>{card.watermark}</div>
@@ -211,11 +245,83 @@ export default function LegalIntelligence() {
                                                     </div>
                                                 ))}
                                             </div>
-                                        </motion.div>
+                                        </div>
                                     </React.Fragment>
                                 ))}
-                            </AnimatePresence>
-                        </motion.div>
+                            </div>
+                        ) : (
+                            // Desktop View: Pinned sticky scroll glides side-by-side with Framer Motion
+                            <motion.div layout className={styles.cardsRow}>
+                                <AnimatePresence mode="popLayout">
+                                    {visibleCards.map((card, index) => (
+                                        <React.Fragment key={card.step}>
+                                            {/* Connecting Line between cards */}
+                                            {index > 0 && (
+                                                <motion.div
+                                                    className={styles.cardConnectionBridge}
+                                                    initial={{ scaleX: 0, opacity: 0 }}
+                                                    animate={{ scaleX: 1, opacity: 1 }}
+                                                    exit={{ scaleX: 0, opacity: 0 }}
+                                                    transition={{ duration: 0.45, ease: 'easeOut' }}
+                                                >
+                                                    <div className={styles.bridgeTrack} />
+                                                    <div className={styles.bridgeGlow} />
+                                                    <span className={styles.bridgeArrow}>
+                                                        <span className={styles.arrowDesktop}>→</span>
+                                                    </span>
+                                                </motion.div>
+                                            )}
+
+                                            {/* Step Card with Bottom-to-Top entrance and Layout Move */}
+                                            <motion.div
+                                                ref={(el) => (cardRefs.current[index] = el)}
+                                                layout
+                                                className={`${styles.stepCard} ${currentStep === card.step ? styles.highlightedCard : ''}`}
+                                                initial={{ opacity: 0, y: 90, scale: 0.92 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 70, scale: 0.92 }}
+                                                transition={{
+                                                    layout: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+                                                    opacity: { duration: 0.45 },
+                                                    y: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+                                                    scale: { duration: 0.45 }
+                                                }}
+                                            >
+                                                {/* Background Watermark 01, 02, 03 */}
+                                                <div className={styles.watermarkNumber}>{card.watermark}</div>
+
+                                                {/* Top Row: Icon with Step Number badge + Tag Pill */}
+                                                <div className={styles.cardTopRow}>
+                                                    <div className={styles.iconBox}>
+                                                        <span className={styles.stepBadge}>{card.step}</span>
+                                                        <div className={styles.iconElement}>{card.icon}</div>
+                                                    </div>
+
+                                                    <div className={styles.tagPill}>
+                                                        <span className={styles.tagStar}>✦</span>
+                                                        <span>{card.tag}</span>
+                                                    </div>
+                                                </div>
+
+                                                {/* Card Heading & Description */}
+                                                <h3>{card.title}</h3>
+                                                <p>{card.description}</p>
+
+                                                {/* 3 Checklist Feature Items */}
+                                                <div className={styles.featureItemsList}>
+                                                    {card.features.map((feat, fIdx) => (
+                                                        <div key={fIdx} className={styles.featureItem}>
+                                                            <span className={styles.checkCircle}>✓</span>
+                                                            <span>{feat}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        </React.Fragment>
+                                    ))}
+                                </AnimatePresence>
+                            </motion.div>
+                        )}
                     </div>
 
                 </div>

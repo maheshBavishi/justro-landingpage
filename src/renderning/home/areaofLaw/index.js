@@ -214,7 +214,7 @@ export default function AreaofLaw() {
             if (viewportRef.current && firstCardRef.current) {
                 const viewportWidth = viewportRef.current.offsetWidth || window.innerWidth;
                 const cardWidth = firstCardRef.current.offsetWidth || 460;
-                const gap = 28;
+                const gap = window.innerWidth <= 568 ? 14 : window.innerWidth <= 1024 ? 16 : 28;
                 const stride = cardWidth + gap;
                 const offset = (viewportWidth - cardWidth) / 2;
 
@@ -236,17 +236,19 @@ export default function AreaofLaw() {
         isAnimatingRef.current = true;
         setActiveIndex(safeIdx);
 
-        if (sectionRef.current) {
+        // Only scroll the vertical window on desktop where section is 250vh sticky
+        if (window.innerWidth > 1024 && sectionRef.current) {
             const sectionTop = sectionRef.current.offsetTop;
             const sectionHeight = sectionRef.current.offsetHeight;
             const viewportHeight = window.innerHeight;
             const maxScroll = sectionHeight - viewportHeight;
-            const targetScroll = sectionTop + (safeIdx / (practiceAreas.length - 1)) * maxScroll;
-
-            window.scrollTo({
-                top: targetScroll,
-                behavior: 'smooth'
-            });
+            if (maxScroll > 0) {
+                const targetScroll = sectionTop + (safeIdx / (practiceAreas.length - 1)) * maxScroll;
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+            }
         }
 
         setTimeout(() => {
@@ -261,8 +263,8 @@ export default function AreaofLaw() {
         }, 50);
 
         const { offset, velocity } = info;
-        const swipeThreshold = 45; // Minimum px to trigger card change
-        const velocityThreshold = 250; // Minimum velocity to trigger card change
+        const swipeThreshold = 35; // Responsive swipe threshold for mobile touch
+        const velocityThreshold = 200;
 
         // Dragged Left -> Next Card
         if ((offset.x < -swipeThreshold || velocity.x < -velocityThreshold) && activeIndexRef.current < practiceAreas.length - 1) {
@@ -278,9 +280,10 @@ export default function AreaofLaw() {
         }
     };
 
-    // ONE-SCROLL-ONE-CARD LOCK: Prevents single scroll from jumping 2 cards
+    // ONE-SCROLL-ONE-CARD LOCK: Prevents single scroll from jumping 2 cards (Desktop only)
     useEffect(() => {
         const handleWheel = (e) => {
+            if (window.innerWidth <= 1024) return;
             if (!sectionRef.current) return;
             const rect = sectionRef.current.getBoundingClientRect();
 
@@ -312,9 +315,10 @@ export default function AreaofLaw() {
         return () => window.removeEventListener('wheel', handleWheel);
     }, []);
 
-    // Fallback sync for scrollbar dragging
+    // Fallback sync for scrollbar dragging (Desktop only)
     useEffect(() => {
         const unsubscribe = scrollYProgress.on('change', (progress) => {
+            if (window.innerWidth <= 1024) return;
             if (isAnimatingRef.current || isDraggingRef.current) return;
             const total = practiceAreas.length;
             const nextIdx = Math.min(Math.floor(progress * total), total - 1);
@@ -333,7 +337,7 @@ export default function AreaofLaw() {
     const targetX = metrics.centerOffset - activeIndex * metrics.stride;
 
     return (
-        <section ref={sectionRef} className={styles.areaofLawStickyWrapper}>
+        <section ref={sectionRef} className={styles.areaofLawStickyWrapper} id="practice-areas">
             <div className={styles.topDividerLine} />
             <div className={styles.bottomDividerLine} />
             {/* Pinned Sticky Stage (100vh) */}
@@ -458,6 +462,41 @@ export default function AreaofLaw() {
                             );
                         })}
                     </motion.div>
+                </div>
+
+                {/* Carousel Navigation Controls (Arrows + Interactive Dots) */}
+                <div className={styles.sliderControls}>
+                    <button
+                        type="button"
+                        className={styles.navButton}
+                        onClick={() => goToCard(activeIndex - 1)}
+                        disabled={activeIndex === 0}
+                        aria-label="Previous Practice Area"
+                    >
+                        ←
+                    </button>
+
+                    <div className={styles.dotsContainer}>
+                        {practiceAreas.map((area, idx) => (
+                            <button
+                                key={area.id}
+                                type="button"
+                                className={`${styles.dotPill} ${idx === activeIndex ? styles.activeDot : ''}`}
+                                onClick={() => goToCard(idx)}
+                                aria-label={`Go to ${area.title}`}
+                            />
+                        ))}
+                    </div>
+
+                    <button
+                        type="button"
+                        className={styles.navButton}
+                        onClick={() => goToCard(activeIndex + 1)}
+                        disabled={activeIndex === practiceAreas.length - 1}
+                        aria-label="Next Practice Area"
+                    >
+                        →
+                    </button>
                 </div>
             </div>
         </section>

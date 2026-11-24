@@ -8,6 +8,14 @@
     background: linear-gradient(180deg, #f8fafc 0%, #fefcf7 40%, #f9fbfd 100%);
     overflow: hidden;
 
+    @include breakpoint("md") {
+        padding: 70px 0 80px 0;
+    }
+
+    @include breakpoint("sm") {
+        padding: 48px 0 54px 0;
+    }
+
     // Top & Bottom Boundary Lines
     .topDividerLine {
         position: absolute;
@@ -62,6 +70,17 @@
         filter: blur(60px);
         pointer-events: none;
         z-index: 1;
+
+        @include breakpoint("md") {
+            width: 100%;
+            height: 200px;
+        }
+
+        @include breakpoint("sm") {
+            max-width: 480px;
+            height: 160px;
+            filter: blur(40px);
+        }
     }
 
     :global(.container) {
@@ -78,6 +97,16 @@
         flex-direction: column;
         align-items: center;
 
+        @include breakpoint("md") {
+            margin-bottom: 35px;
+            padding: 0 16px;
+        }
+
+        @include breakpoint("sm") {
+            margin-bottom: 24px;
+            padding: 0 12px;
+        }
+
         .topBadge {
             display: inline-flex;
             align-items: center;
@@ -89,6 +118,11 @@
             box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
             margin-bottom: 18px;
             backdrop-filter: blur(8px);
+
+            @include breakpoint("sm") {
+                padding: 5px 12px;
+                margin-bottom: 14px;
+            }
 
             .badgePulse {
                 width: 7px;
@@ -105,6 +139,10 @@
                 letter-spacing: 0.12em;
                 color: #92400e;
                 text-transform: uppercase;
+
+                @include breakpoint("sm") {
+                    font-size: 10.5px;
+                }
             }
         }
 
@@ -117,6 +155,18 @@
             margin-bottom: 16px;
 
             @include heading-font;
+
+            @include breakpoint("md") {
+                font-size: 38px;
+                line-height: 1.2;
+                margin-bottom: 12px;
+            }
+
+            @include breakpoint("sm") {
+                font-size: 26px;
+                line-height: 1.25;
+                margin-bottom: 8px;
+            }
 
             .goldText {
                 background: linear-gradient(135deg, #b45309 0%, #d97706 40%, #f59e0b 80%, #fbbf24 100%);
@@ -132,6 +182,11 @@
             color: #475569;
             margin: 0;
             max-width: 640px;
+
+            @include breakpoint("sm") {
+                font-size: 13.5px;
+                line-height: 1.5;
+            }
         }
     }
 
@@ -189,6 +244,10 @@
             overflow: hidden;
             position: relative;
 
+            @include breakpoint("sm") {
+                height: 155px;
+            }
+
             .cardSvg {
                 width: 100%;
                 height: 100%;
@@ -202,6 +261,10 @@
             display: flex;
             flex-direction: column;
             flex: 1;
+
+            @include breakpoint("sm") {
+                padding: 18px 16px 18px 16px;
+            }
 
             .cardStatBadge {
                 margin-bottom: 12px;
@@ -226,6 +289,11 @@
                 line-height: 1.35;
                 letter-spacing: -0.015em;
                 margin-bottom: 10px;
+
+                @include breakpoint("sm") {
+                    font-size: 17px;
+                    margin-bottom: 8px;
+                }
             }
 
             p {
@@ -234,6 +302,12 @@
                 color: #64748b;
                 margin: 0 0 20px 0;
                 flex: 1;
+
+                @include breakpoint("sm") {
+                    font-size: 13.5px;
+                    line-height: 1.5;
+                    margin-bottom: 14px;
+                }
             }
 
             .cardAction {
@@ -272,6 +346,13 @@
             padding: 34px 24px;
         }
 
+        @include breakpoint("sm") {
+            padding: 24px 18px;
+            border-radius: 18px;
+            margin-top: 36px;
+            gap: 20px;
+        }
+
         .ctaContent {
             max-width: 580px;
 
@@ -293,6 +374,25 @@
                 margin-bottom: 8px;
 
                 @include heading-font;
+
+                @include breakpoint("sm") {
+                    font-size: 20px;
+                    line-height: 1.3;
+                }
+            }
+
+            p {
+                font-size: 15px;
+                color: #475569;
+                line-height: 1.5;
+                margin: 0;
+
+                @include breakpoint("sm") {
+                    font-size: 13.5px;
+                    line-height: 1.45;
+                }
+            }
+        }
             }
 
             p {
