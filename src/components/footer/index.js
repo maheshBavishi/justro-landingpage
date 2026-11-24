@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import styles from './footer.module.scss';
+import Logo from '../logo';
 
 export default function Footer() {
     return (
@@ -76,9 +77,7 @@ export default function Footer() {
                 <div className={styles.footerMainRow}>
                     {/* Logo */}
                     <div className={styles.logo}>
-                        <h2>
-                            Justro
-                        </h2>
+                        <Logo theme="light" size={38} />
                     </div>
 
                     {/* Header Menu Links */}

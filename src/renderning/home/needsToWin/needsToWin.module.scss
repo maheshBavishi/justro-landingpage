@@ -393,33 +393,33 @@
                 }
             }
         }
-            }
+    }
 
-            p {
-                font-size: 15px;
-                color: #475569;
-                line-height: 1.5;
-                margin: 0;
-            }
-        }
+    p {
+        font-size: 15px;
+        color: #475569;
+        line-height: 1.5;
+        margin: 0;
+    }
+}
 
-        .ctaButtons {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-shrink: 0;
+.ctaButtons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
 
-            @include breakpoint("sm") {
-                flex-direction: column;
-                width: 100%;
+    @include breakpoint("sm") {
+        flex-direction: column;
+        width: 100%;
 
-                div {
-                    width: 100%;
-                }
-            }
+        div {
+            width: 100%;
         }
     }
 }
+
+
 
 // ==========================================
 // INFINITE ANIMATIONS FOR CARD ILLUSTRATIONS

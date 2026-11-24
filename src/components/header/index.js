@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import styles from './header.module.scss';
 import Button from '../button';
+import Logo from '../logo';
 
 export default function Header() {
     const [isVisible, setIsVisible] = useState(true);
@@ -55,9 +56,7 @@ export default function Header() {
             <div className='container'>
                 <div className={styles.headerAlignment}>
                     <div className={styles.logo}>
-                        <h2>
-                            Justro
-                        </h2>
+                        <Logo theme="dark" size={36} />
                     </div>
                     <div className={styles.menu}>
                         <a href="#features" data-text="Features"><span>Features</span></a>
